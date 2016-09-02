@@ -1,0 +1,172 @@
+(require 'cl)
+
+;;;
+;;; Custom functions
+;;;
+
+(defun reorder-exec-path ()
+  "Reorder the values on exec-path so that the Emacs directory
+takes precedence over the rest."
+  (labels ((emacs-binary-dir-p (s)
+			       (string-prefix-p "/Applications/Emacs.app" s))
+	   (find-matching (p xs)
+			  (loop for x in xs
+				when (funcall p x)
+				collect x)))
+    (setq exec-path
+	  (append (find-matching #'emacs-binary-dir-p exec-path)
+		  (find-matching #'(lambda (x)
+				     (not (emacs-binary-dir-p x)))
+				 exec-path)))))
+
+(defun ensure-package-installed (package)
+  (unless (package-installed-p package)
+    (package-install package)))
+
+;;;
+;;; UI
+;;;
+
+(setq inhibit-splash-screen t
+      inhibit-startup-message t
+      inhibit-startup-echo-area-message t)
+
+(tool-bar-mode -1)
+(menu-bar-mode -1)
+(scroll-bar-mode -1)
+
+(set-default 'cursor-type 'box)
+
+(fringe-mode 1)
+
+(column-number-mode 1)
+
+(add-hook 'prog-mode-hook (lambda () (linum-mode 1)))
+
+;;;
+;;; Package System
+;;;
+
+(require 'package)
+
+(custom-set-variables
+ '(package-archives
+   (quote
+    (
+     ("gnu" . "http://elpa.gnu.org/packages/")
+     ("melpa" . "https://melpa.org/packages/")
+     ("melpa-stable" . "http://stable.melpa.org/packages/")
+     ("marmalade" . "http://marmalade-repo.org/packages/")
+    )
+   )
+  )
+ )
+(setq package-enable-at-startup nil)
+(package-initialize)
+
+;; Theme
+
+(add-to-list 'custom-theme-load-path "~/.emacs.d/local/themes")
+
+(ensure-package-installed 'idea-darkula-theme)
+
+
+(load-theme 'idea-darkula t)
+
+;;
+;; FullScreen
+;;
+
+(custom-set-variables
+ '(initial-frame-alist (quote ((fullscreen . maximized)))))
+
+;;
+;; Haskell-Mode
+;;
+
+(ensure-package-installed 'haskell-mode)
+(require 'haskell-interactive-mode)
+(require 'haskell-process)
+(add-hook 'haskell-mode-hook 'interactive-haskell-mode)
+
+(custom-set-variables
+ '(haskell-mode-hook (quote (turn-on-haskell-indent interactive-haskell-mode)))
+ '(haskell-process-auto-import-loaded-modules t)
+ '(haskell-process-log t)
+ '(haskell-process-suggest-remove-import-lines t)
+ '(haskell-process-type (quote ghci)))
+
+
+(global-set-key (kbd "M-r") 'inferior-haskell-load-and-run)
+
+(eval-after-load 'flycheck
+  '(add-hook 'flycheck-mode-hook #'flycheck-haskell-setup))
+
+;;
+;; Nyan
+;;
+
+(ensure-package-installed 'nyan-mode)
+
+(nyan-mode)
+(nyan-start-animation)
+
+;;
+;; linum
+;;
+
+(ensure-package-installed 'linum)
+
+(require 'linum)
+
+;;
+;; Emacs server
+;;
+
+(server-start)
+
+(when (eq system-type 'darwin)
+  ;; On Mac OS X, override the execution path so that Emacs finds the
+  ;; correct `emacsclient' binary.
+  (reorder-exec-path))
+
+(setq server-socket-dir "~/.emacs.d/server")
+
+;;
+;; Open files using terminal
+;;
+
+(exec-path-from-shell-initialize)
+
+;;
+;; Global key bindings
+;;
+
+(global-set-key (kbd "C-<tab>") 'completion-at-point)
+(global-set-key (kbd "C-x g") 'magit-status)
+(global-set-key (kbd "C-x l") 'magit-log)
+(global-set-key (kbd "C-c m") 'sql-mysql)
+
+;;
+;; Disable right M
+;;
+
+(setq mac-right-option-modifier nil)
+
+;;
+;; Disable bell
+;;
+
+(setq ring-bell-function 'ignore)
+
+;;;
+;;; MYSQL
+;;;
+
+(setq sql-mysql-program "/usr/local/mysql/bin/mysql")
+
+(setq sql-mysql-login-params
+      '((user :default "root")
+        (database :default "lportal")
+        (password :default "root")
+        (server :default "localhost")))
