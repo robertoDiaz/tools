@@ -1,0 +1,37 @@
+alias]
+	co = checkout
+	ci = commit
+	st = status
+	br = branch
+	ri = rebase -i HEAD~10
+	ri2 = rebase -i HEAD~20
+	ri5 = rebase -i HEAD~50
+	ri10 = rebase -i HEAD~100
+	ca = commit --amend
+	ra = rebase --abort
+	rc = rebase --continue
+	pum = pull upstream master
+	pom = push origin master
+	prum = pull --rebase upstream master
+	hist = log --pretty=format:\"%h %ad | %s%d [%an]\" --graph --date=short
+	type = cat-file -t
+	dump = cat-file -p
+	cb = checkout -b
+	rm = branch -d
+	bd = branch -D
+[user]
+	name = Roberto Díaz
+	email = roberto.diaz@liferay.com
+[filter "lfs"]
+	clean = git-lfs clean %f
+	smudge = git-lfs smudge %f
+	required = true
+[core]
+	editor = /Applications/Emacs.app/Contents/MacOS/bin/emacsclient
+	excludesfile = /Users/roberto/.gitignore_global
+[difftool "sourcetree"]
+	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
+	path = 
+[mergetool "sourcetree"]
+	cmd = /private/var/folders/ds/n9xh7h6103j5v8129lw5mtdc0000gn/T/AppTranslocation/75878895-A5BD-4017-9150-CD151E1523A6/d/SourceTree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
+	trustExitCode = true
