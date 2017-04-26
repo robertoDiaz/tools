@@ -55,7 +55,8 @@ autoload -U compinit && compinit
 
 # User configuration
 
-export PATH="/Users/roberto/.jenv/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin"
+export PATH="/Users/roberto/.jenv/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:$HOME/Library/Haskell/bin:$PATH"
+
 # export MANPATH="/usr/local/man:$MANPATH"
 
 source $ZSH/oh-my-zsh.sh
@@ -87,6 +88,9 @@ source $ZSH/oh-my-zsh.sh
 
 alias lfp="cd ~/work/liferay-portal"
 alias lfpl="cd ~/work/liferay-plugins"
+alias master="cd ~/support-portal/master/liferay-portal"
+alias masteree="cd ~/support-portal/master-ee/liferay-portal-ee"
+alias 62ee="cd ~/support-portal/6.2--ee/liferay-portal-ee"
 
 alias apps="cd ~/work/liferay-portal/modules/apps"
 alias modules="cd ~/work/liferay-portal/modules"
@@ -112,9 +116,20 @@ alias mydb="mysql -uportal -p -h 192.168.0.2"
 alias em='/Applications/Emacs.app/Contents/MacOS/bin/emacsclient -n'
 alias mysql='/usr/local/mysql/bin/mysql'
 
+#
+# ANT OPS JAVA 8
+# 
+
+#export ANT_OPTS="-Xmx4096m -XX:MaxMetaspaceSize=1024m"
+
+#
+# ANT OPS JAVA 7
+#
+
 export ANT_OPTS="-Xmx4096m -XX:MaxPermSize=1024m"
+
 export ALTERNATE_EDITOR="emacs" EDITOR="/Applications/Emacs.app/Contents/MacOS/bin/emacsclient" VISUAL="/Applications/Emacs.app/Contents/MacOS/bin/emacsclient"
-export JAVA_OPTS="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=9009"
+#export JAVA_OPTS="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=4004"
 
 fpath=(/etc/zsh-completions/src $fpath)
 
