@@ -9,10 +9,10 @@ import sys
 
 from git import Repo
 
-def commit(message):
+def commit(message, preffix):
 	repo = Repo('.')
 
-	repo.index.commit("%s %s" %(branchName, message))
+	repo.index.commit("%s %s" %(preffix, message))
 
 if __name__ == "__main__":
 	if len(sys.argv) == 2:
@@ -24,7 +24,7 @@ if __name__ == "__main__":
 			raise Exception('Do not commit in master branch')
 
 		preffix = branchName
-	elif if len(sys.argv) == 3:
+	elif len(sys.argv) == 3:
 		message = sys.argv[1]
 		preffix = sys.argv[2]
 	else :
