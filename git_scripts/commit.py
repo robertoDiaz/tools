@@ -9,16 +9,16 @@ import sys
 
 from git import Repo
 
-def commit(message, preffix):
-	repo = Repo('.')
-
+def commit(repo, message, preffix):
 	repo.index.commit("%s %s" %(preffix, message))
 
 if __name__ == "__main__":
+	repo = Repo('.')
+		
 	if len(sys.argv) == 2:
 		message = sys.argv[1]
 
-		brachName = repo.active_branch.name
+		branchName = repo.active_branch.name
 
 		if branchName == 'master':
 			raise Exception('Do not commit in master branch')
@@ -30,4 +30,4 @@ if __name__ == "__main__":
 	else :
 		raise Exception('Wrong parameters')
 
-	commit(message, preffix)
+	commit(repo, message, preffix)
