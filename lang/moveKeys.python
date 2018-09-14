@@ -1,0 +1,32 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*- 
+#
+# author Roberto Díaz
+#
+
+import sys
+
+def moveKey(key, originFolder, destinationFolder):
+	file = open(originFolder + "language.properties","r+")
+	
+	lines = file.realines()
+	
+	file.seek(0)
+	
+	for i in lines:
+		if i != key:
+			file.write(i)
+	
+	file.truncate()
+	file.close()
+
+if __name__ == "__main__":
+
+	if len(sys.argv) == 3:
+		key = sys.argv[1]
+		originFolder = sys.argv[2]
+		destinationFolder = sys.argv[3]
+	else :
+		raise Exception('Wrong parameters')
+
+	moveKey(key, originFolder, destinationFolder)	
